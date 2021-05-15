@@ -1,0 +1,4 @@
+{
+  "mongoURI" : "mongodb+srv://TaskTracker:HMXmdVVnIWe9LULD@tasktracker.y2miz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken"
+}
