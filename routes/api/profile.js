@@ -5,30 +5,17 @@ const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 const {check, validationResult} = require('express-validator')
-/*
-
-const config = require('config');
-const {check, validationResult} = require('express-validator')
-const gravatar = require('gravatar');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-*/
 
 
-//@route GET api/profile/me
+
+//@route GETs api/profile/me
 //@desc Get current users profile
 //@access Private
 
-/* 
-router.get('./', auth, (req, res) => res.send('Profile route'));
-*/
-
-/*we are using async await cause Monogge returns a promise*/
 
 router.get('/me', auth,  async (req, res) => {
 
   try {
-
   const profile = await Profile.findOne({user: req.user.id}).populate('user',
     [ 'name','avatar']);
     console.log('im working')
@@ -183,10 +170,12 @@ router.delete('/', auth, async (req, res) => {
  try{
    
    //remove profile
-   await Profile.findOneAndRemove({user: req.user.id});
-   res.json(profile)
+     await Promise.all([
+      Post.deleteMany({ user: req.user.id }),
+      Profile.findOneAndRemove({ user: req.user.id }),
+      User.findOneAndRemove({ _id: req.user.id })
+    ]);
 
-   await User.findOneAndRemove({_id: req.user.id});
    res.json({msg: 'Your account is removed'})
    
  } catch(err) {

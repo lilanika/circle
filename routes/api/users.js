@@ -5,58 +5,56 @@ const {check, validationResult} = require('express-validator')
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const normalize = require('normalize-url')
 
 
 
 const User = require('../../models/User');
 
-//@route Post api/auth 
+//@route POST api/users
 //@desc Register User
 //@access Public 
 
+
+// SignUp a user  -> sending data  to server
 router.post( '/', 
-[check('name', 'Name is required')
-.not()
-.isEmpty(), 
-check('email', 'Please include a valid email')
-.isEmail(), 
+[check('name', 'Name is required').notEmpty(), 
+check('email', 'Please include a valid email').isEmail(), 
 check('password', 'Please enter a password with 6 or more charackters').isLength({min: 6})
 ],
 async (req, res) => {
-  //thats the object of data that will send to the route for the body parser you need middleware
-  //mit req..body bekommen wir zugang zu den post req(gesendeten daten an den server )
+  //thats the object of data thats will be send to this route
+  // we have to init the middleware )in server.js) for the body parser
   console.log(req.body);
+  //validatation if the user doesnt send the right stuff. 
   const errors = validationResult(req); 
-
-  //if they are errors
-  if(!errors.isEmpty()){
-return res.status(400).json({errors: errors.array()}); 
+  if(!errors.isEmpty()) {
+  return res.status(400).json({errors: errors.array()}); 
   }
   
+  //get data with destr.
+  const {name, email, password} = req.body;
 
-//get data with destr.
-const {name, email, password} = req.body;
 
-
-try{
-
-//See if user exists //mongoose method
+try {
+//See if user exists 
 let user = await User.findOne({ email});
-
-
-if( user){
+if( user) {
  return res.status(400).json({errors:[{msg:'User already exist'}]});
 }
 
 // get users gravatar 
-const avatar = gravatar.url(email, {
-  //size
-  s:'200',
-  r:'pg',
-  //default icon
-  d:'mm'
-})
+const avatar = normalize(
+  gravatar.url(email, {
+    s: '200',
+    r: 'pg',
+    d: 'mm'
+  }),
+  { forceHttps: true }
+);
 
+
+//create new User
 user = new User({
   name, 
   email, 
@@ -64,7 +62,7 @@ user = new User({
   password
 }) 
 
- //encrypt the password
+ //Encrypt the password
  const salt = await  bcrypt.genSalt(10);
  user.password = await bcrypt.hash(password, salt);
 
@@ -72,15 +70,13 @@ user = new User({
  await user.save(); 
 
 //return json webtoken
-  //res.send('user registred')
-
   /* Here we creat the payload */
 
-  const payload = {
+const payload = {
     user: {
       id: user.id
     }
-  }
+}
 
   jwt.sign(
     payload, 
@@ -93,10 +89,8 @@ res.json({ token });
     );
 } catch(err){
  console.error(err.message);
- res.status(500).send('Server error-user reg fail');
+ res.status(500).send('Server error-user registration fail');
 } 
 }); 
-
-
 
 module.exports = router;

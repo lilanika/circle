@@ -8,38 +8,30 @@ const bcrypt = require('bcryptjs');
 const User =require('../../models/User')
 
 
-//@route api/auth 
-//@desc Test route
-//@access Public 
+//@route  GET api/auth 
+//@desc    Get user by token
+//@access  Private
 
-/*
-router.get('/', auth, (req, res) => res.send('auth route'))
-*/
 
-// auth (middleware) inside the get will protect the routes. 
-
+// auth --> protected route (with token)
 router.get('/', auth, async (req, res) => {
- try { 
-
-  const user = await User.findById(req.user.id).select('-password');
-  res.json(user);
-
- }catch(err){
-console.error(err.message)
-res.status(500).send(' auth.js return UserData failed')
- }
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
+//@route POST api/auth 
+//@desc login user get token 
+//@access  Public 
 
-//@route Post api/auth 
-//@desc Authenticate user an get token 
-//@access Public 
-//The purpose of this route is get the tokens so that you can make requeist to private routes
 
 router.post( 
   '/', 
 [
-
 check('email', 'Please include a valid email')
 .isEmail(), 
 check('password', 
@@ -62,17 +54,16 @@ const {email, password} = req.body;
 
 
 try{
-//See if user exists //mongoose method
+// if user = true
 let user = await User.findOne({ email});
 
-//when there is no user
+//when there is no user send back an error
 if(!user){
  return res.status(400).json({errors:[{msg:'invalid credentials'}]});
 }
 
-//match passwords  with method from bcrypt: compare 
+//match passwords  with method from bcrypt - > compare
 //compare return a promise
-
 const isMatch = await bcrypt.compare(password, user.password)
 
 if(!isMatch) {
@@ -83,8 +74,6 @@ if(!isMatch) {
   }
   )
 }; 
-
-
 
 //payload
   const payload = {
