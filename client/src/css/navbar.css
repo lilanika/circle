@@ -1,0 +1,98 @@
+/* Navbar */
+/* https://de.freepik.com/freie-ikonen/papagei_928764.htm*/
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 4rem;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  top: 0;
+  background-color: rgb(246, 246, 246);
+}
+
+.bg-blue {
+  border-radius: 10rem;
+  padding: 0.2rem;
+  background-color: var(--dark-color);
+}
+
+.navbar a {
+  color: var(--dark-color);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bolder;
+  padding: 0.45rem;
+  margin: 0 0.25rem;
+}
+
+nav img {
+  width: 30px;
+  height: 30px;
+  margin: auto 0;
+  opacity: 0.7;
+}
+
+.navbar h1 {
+  font-size: 1.4rem;
+}
+
+.navbar ul {
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.start {
+  margin: auto 0;
+  padding: 0 1rem;
+  color: rgb(230, 218, 218);
+}
+
+/*icons*/
+nav i {
+  font-size: 3.5rem;
+  color: var(--primary-color);
+}
+
+.msg i {
+  font-size: 1.6rem;
+  color: var(--primary-color);
+  padding: 0.7rem;
+}
+
+.msg:hover,
+.navbar h1:hover,
+.profile-i:hover {
+  transform: translateY(-3px);
+}
+
+.msg:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.navbar a:hover {
+  color: burlywood;
+}
+
+
+
+@media (max-width: 700px) {
+  .start {
+    display: none;
+  }
+
+  nav i {
+    font-size: 2.8rem;
+    color: var(--primary-color);
+  }
+
+  .msg i {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    padding: 0.7rem;
+  }
+}
+

@@ -16,7 +16,7 @@ const User = require('../../models/User');
 //@access Public 
 
 
-// SignUp a user  -> sending data  to server
+// SignUp a user  -> sending data to server
 router.post( '/', 
 [check('name', 'Name is required').notEmpty(), 
 check('email', 'Please include a valid email').isEmail(), 
