@@ -291,8 +291,8 @@
 
 /* Forms */
 .form .form-group {
-  margin: 1.2rem 10rem;
-   padding: 0.3rem !important;
+  margin: 1.2rem 0rem;
+ padding: 0.3rem !important; 
 }
 
 .form p, 

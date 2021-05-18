@@ -4,8 +4,8 @@
   display: grid;
   grid-template-areas:
     'reg pic';
-  grid-gap: 1rem; 
-  margin: 0 2rem;
+  /*grid-gap: 1rem; */
+  /*margin: 0 2rem;*/
 }
 
 .grid-container h1 {
@@ -28,6 +28,16 @@ justify-content: center;
 text-align: center;
 }
 
+.auth {
+padding:20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+}
+
 .pic {
-background:#F3CE00;
+width:100vh;
+height:100vh;
 }
