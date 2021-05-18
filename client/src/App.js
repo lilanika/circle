@@ -8,7 +8,7 @@ import Login from './components/auth/Login';
 
 //this line that connects react and redux
 import {Provider} from 'react-redux'; 
-import store from './components/store';
+import store from './store';
 
 import './css/App.css';
 import './css/media.css';

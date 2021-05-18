@@ -1,9 +1,10 @@
 
 import React, {  useState} from 'react';
+import {connect} from 'react-redux'; 
 import { Link } from 'react-router-dom';
+import { setAlert } from '../../actions/alert';
 
-
-const Register = () => {
+const Register = ({ setAlert, register, isAuthenticated })  => {
 
 const [formData, setFormData] = useState({
   name:'', 
@@ -24,7 +25,7 @@ setFormData({...formData, [e.target.name]: e.target.value})
 const onSubmit = async e => {
   e.preventDefault(); 
   if(password !== password2){
-   console.log('Password do not match')
+   setAlert('Password do not match', 'danger')
   }else {
     console.log('onSubmit works :-)')
   }
@@ -105,7 +106,7 @@ const onSubmit = async e => {
 }
 
 
-export default Register
+export default connect( null, {setAlert}) (Register);
 
 
 /*c
